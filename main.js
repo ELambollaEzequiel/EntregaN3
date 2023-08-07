@@ -71,13 +71,7 @@ function agregarACarro(prod) {
     <td>${prod.id}</td>
     <td>${prod.model}</td>
     <td>${prod.price}</td>
-    <td><button
-    class="btn eliminarBoton"
-    type="button"
-    >
-    eliminar
-    </button></td>
-  </tr>`; //button eliminar
+  </tr>`;
   document.getElementById("total").innerText =
     "Total a pagar $: " + totalCompra;
   localStorage.setItem("carro", JSON.stringify(carro));
@@ -236,12 +230,6 @@ Finalizar Compra
     <td>${prod.id}</td>
     <td>${prod.model}</td>
     <td>${prod.price}</td>
-    <td><button
-    class="btn eliminarBoton"
-    type="button"
-    >
-    eliminar
-    </button></td>
   </tr>
   `;
 
@@ -266,7 +254,7 @@ Finalizar Compra
   let btnFinalizarCompra = document.getElementById("btnFinalizarCompra");
   btnFinalizarCompra.addEventListener("click", () => {
     //vaciar array carro y el renderizado
-    carro = [];
+
     document.getElementById("tablabody").innerHTML = ``;
     document.getElementById("total").innerText = `Total a pagar $: `;
     localStorage.removeItem("carro");
@@ -274,8 +262,27 @@ Finalizar Compra
     columna3.classList.remove("col-2");
     columna2.classList.replace("col-8", "col-10");
     columna3.innerHTML = "";
-
-    cantidadProdCarrito.innerText = carro.length;
+    //alert de sweet alert ( se que la profe dice que no incluyamos dos librerias que hacen lo mismo pero me servia en modo ilustrativo)
     console.log(carritoEstado);
+    Swal.fire({
+      title: "VERIFIQUE ESTOS DATOS?",
+      text: `Usted posee : ${carro.length} de prod en carro , por un total de : ${totalCompra}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "confirmar!",
+    }).then((result) => {
+      //da un mensaje de succes y en caso de que este bien sigue con el vaciado del carrito y del contador de prod
+      if (result.isConfirmed) {
+        Swal.fire(
+          "Tu carrito a sido validado con exito",
+          "En unos momentos te enviaremos el link de pago",
+          "success"
+        );
+        carro = [];
+        cantidadProdCarrito.innerText = carro.length;
+      }
+    });
   });
 });
