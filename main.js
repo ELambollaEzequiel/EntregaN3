@@ -1,7 +1,7 @@
 let cajasFila = document.getElementById("fila-cajas");
 let caja = document.getElementById("caja");
 
-// insertar productos en html
+// renderizar productos
 const generarCajas = (arr) => {
   cajasFila.innerHTML = "";
   for (const prod of arr) {
@@ -15,10 +15,6 @@ const generarCajas = (arr) => {
     <div class="card-body">
       <h5 class="card-title" id="nombreProd">${prod.model}A15</h5>
       <p class="card-text" > 
-      <strong>Especificaciones Tecnicas : </strong><br>
-      <strong>Almacenamiento interno:</strong> ${prod.memoriaInterna} Gb<br>
-      <strong>Camara Delantera: </strong>${prod.camaraDelantera} px <br>
-      <strong>Camara Trasera : </strong>${prod.camaraTrasera} px <br>
       <strong id="precioProd">Precio :</strong> $ ${prod.price}
       </p>
       <button
@@ -40,12 +36,14 @@ let carro = JSON.parse(localStorage.getItem("carro")) || [];
 let btnComprar = document.getElementsByClassName("compra");
 let cantidadProdCarrito = document.getElementById("cantProdCarrito");
 let totalCompra = "";
+//renderizado de cant de productos (primer instancia)
 cantidadProdCarrito.innerText = carro.length;
+// renderizado total de compra , con carro en 0
 totalCompra = carro.reduce(
   (acumulador, producto) => acumulador + producto.price,
   0
 );
-//mensaje de compra
+//mensaje de compra por prod
 const toastCompra = (prodNombre) => {
   Toastify({
     text: `Agrgaste al carrito : ${prodNombre} en 48hs llegara tu producto`,
@@ -57,7 +55,7 @@ const toastCompra = (prodNombre) => {
     duration: 3000,
   }).showToast();
 };
-// pushear al arr carro
+// pushear al arr carro/innert html
 function agregarACarro(prod) {
   toastCompra(prod.model);
   carro.push(prod);
@@ -67,6 +65,7 @@ function agregarACarro(prod) {
     0
   );
   console.table(carro);
+  //renderizado de prod individuales , con carrito abierto
   document.getElementById("tablabody").innerHTML += `
   <tr>
     <td>${prod.id}</td>
@@ -77,15 +76,9 @@ function agregarACarro(prod) {
     "Total a pagar $: " + totalCompra;
   localStorage.setItem("carro", JSON.stringify(carro));
 }
-// for (const btn of btnComprar) {
-//   btn.addEventListener("click", () => {
-//     const prodACarro = productos.find((prod) => prod.id == btn.id);
-//     agregarACarro(prodACarro);
-//     agregarIdCompra(productos);
-//   });
-// }
-//agregar id a los botnes y enciar al carrito
-const agregarIdCompra = (arr) => {
+
+//agregar id a los botnes y enviar al carrito
+const agregarIdComprar = (arr) => {
   for (const btn of btnComprar) {
     btn.addEventListener("click", () => {
       const prodACarro = arr.find((prod) => prod.id == btn.id);
@@ -93,13 +86,13 @@ const agregarIdCompra = (arr) => {
     });
   }
 };
-agregarIdCompra(productos);
+agregarIdComprar(productos);
 
 //filtrar por marca
 let formulario = document.getElementById("formulario");
 let botonesMarca = document.getElementsByClassName("btnMarca");
 console.table(botonesMarca);
-// validacion del id
+// validacion del id segun la marca
 let marca = "";
 const validar = (btn) => {
   switch (btn.id) {
@@ -119,7 +112,7 @@ const validar = (btn) => {
       break;
   }
 };
-//btn funcion
+//btn funcion para filtrar x marca
 for (const btn of botonesMarca) {
   console.log("EL boton " + btn.id);
   btn.addEventListener("click", () => {
@@ -127,11 +120,11 @@ for (const btn of botonesMarca) {
     const filtroMarca = productos.filter((filtro) => filtro.marca == marca);
     console.table(filtroMarca);
     generarCajas(filtroMarca);
-    agregarIdCompra(filtroMarca);
+    agregarIdComprar(filtroMarca);
     console.log(marca);
   });
 }
-//Filtrar por precio
+//Filtrar por precio maximo y minimo
 let inputMax = document.getElementById("input-Max");
 let inputMin = document.getElementById("input-Min");
 let botonSend = document.getElementById("btnSend");
@@ -140,7 +133,7 @@ let botonRemove = document.getElementById("btnRemove");
 let max = "";
 let min = "";
 
-//boton send de precio
+//boton send de filtro precio
 botonSend.addEventListener("click", () => {
   console.log(min);
   max = inputMax.value;
@@ -150,19 +143,18 @@ botonSend.addEventListener("click", () => {
     (filtro) => filtro.price > min && filtro.price < max
   );
   generarCajas(filtrarXPrecio);
-  agregarIdCompra(filtrarXPrecio);
+  agregarIdComprar(filtrarXPrecio);
   inputMin.value = "";
   inputMax.value = "";
 });
-// podria hacer un if en el boton sen de precio para que si se filtro x categoria ademas filtrar por precio
-//boton remove
+//boton remover filtros
 botonRemove.addEventListener("click", () => {
   console.log(min);
   generarCajas(productos);
-  agregarIdCompra(productos);
+  agregarIdComprar(productos);
 });
 
-// Boton Buscar Procutos
+// Boton Buscar Procutos por nombre
 
 let inputBuscar = document.getElementById("input-buscar-prod");
 let btnBuscar = document.getElementById("btn-buscar-prod");
@@ -177,24 +169,27 @@ btnBuscar.addEventListener("click", () => {
     prod.model.toLowerCase().includes(resultadoInput)
   );
   generarCajas(buscarProd);
-  agregarIdCompra(buscarProd);
+  agregarIdComprar(buscarProd);
   inputBuscar.value = "";
 });
 
 // carrito compra
 
-let columna3 = document.getElementById("columna-3");
 let carritoCompra = document.getElementById("carrito-compra");
 let columna2 = document.getElementById("columna-2");
 //abbrir y cerrar carito
-let carritoEstado = "cerrado";
+let carritoEstado = "cerrado"; //estado actual del carrito
+//abrir carrito y renderizar productos
 let btnCarrito = document.getElementById("btnProdCarrito");
 btnCarrito.addEventListener("click", () => {
+  let columna3 = document.getElementById("columna-3");
   carritoEstado = "open";
-
+  //modificar tamaño del main para abrir el carrito
   columna2.classList.replace("col-10", "col-8");
+  //abrir carrito
   columna3.classList.add("col-2");
   console.log(carritoEstado);
+  //renderizar el carrito siempre y cuando el estado del carro sea "open"
   if (carritoEstado == "open") {
     columna3.innerHTML = `           <div class="container-fluid">
 <div class="row">
@@ -228,6 +223,7 @@ id="btnFinalizarCompra"
 Finalizar Compra
 </button>
 </div>`;
+    //renderizado de los prod de carro y del total en el caso de que haya productos guardados
     for (const prod of carro) {
       document.getElementById("tablabody").innerHTML += `
   <tr>
@@ -242,17 +238,20 @@ Finalizar Compra
   } else {
     carritoEstado = "cerrado";
   }
+  //cerrar carrito de compra y seguir comprando
   let btnSeguirCompra = document.getElementById("seguirComprando");
   btnSeguirCompra.addEventListener("click", () => {
+    //cerrado de carrito , removiendo las clases de bootstrap y remplazando los tamaños del main
     columna3.classList.remove("col-2");
     columna2.classList.replace("col-8", "col-10");
     columna3.innerHTML = "";
-    carritoEstado = "cerrado";
+    carritoEstado = "cerrado"; //cerrar carrito para que no se ejecute el renderizado del carro
     console.log(carritoEstado);
   });
-  //
+  //btn finalizar compra ,cerrar y vaciar carrrito
   let btnFinalizarCompra = document.getElementById("btnFinalizarCompra");
   btnFinalizarCompra.addEventListener("click", () => {
+    //vaciar array carro y el renderizado
     carro = [];
     document.getElementById("tablabody").innerHTML = ``;
     document.getElementById("total").innerText = `Total a pagar $: `;
@@ -266,5 +265,3 @@ Finalizar Compra
     console.log(carritoEstado);
   });
 });
-
-//btn seguir comprando y cerrar carrito

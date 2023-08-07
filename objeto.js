@@ -27,4 +27,5 @@ crearProducto(1, "Samsung galaxy", 20450, "samsung");
 crearProducto(2, "Moto e 20 ", 37500, "motorola");
 crearProducto(3, "Iphone Xr3", 245000, "apple");
 crearProducto(4, "Xiaomi Redmi note 35", 87000, "xiaomi");
+crearProducto(5, "Xiaomi Redmi note 35", 87000, "xiaomi");
 console.table(productos);
