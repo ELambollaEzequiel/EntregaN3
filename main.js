@@ -71,7 +71,13 @@ function agregarACarro(prod) {
     <td>${prod.id}</td>
     <td>${prod.model}</td>
     <td>${prod.price}</td>
-  </tr>`;
+    <td><button
+    class="btn eliminarBoton"
+    type="button"
+    >
+    eliminar
+    </button></td>
+  </tr>`; //button eliminar
   document.getElementById("total").innerText =
     "Total a pagar $: " + totalCompra;
   localStorage.setItem("carro", JSON.stringify(carro));
@@ -230,10 +236,18 @@ Finalizar Compra
     <td>${prod.id}</td>
     <td>${prod.model}</td>
     <td>${prod.price}</td>
+    <td><button
+    class="btn eliminarBoton"
+    type="button"
+    >
+    eliminar
+    </button></td>
   </tr>
   `;
+
       document.getElementById("total").innerText =
         "Total a pagar $: " + totalCompra;
+      //boton eliminar
     }
   } else {
     carritoEstado = "cerrado";
