@@ -12,10 +12,13 @@ const generarCajas = (arr) => {
       class="card-img-top"
       alt="..."
     />
-    <div class="card-body">
-      <h5 class="card-title" id="nombreProd">${prod.model}A15</h5>
+    <div class="card-body" style="text-align:center">
+      <h5 class="card-title" id="nombreProd">${prod.modelo}A15</h5>
       <p class="card-text" > 
-      <strong id="precioProd">Precio :</strong> $ ${prod.price}
+       ${prod.descripcion}
+      </p>
+      <p class="card-text" > 
+      <strong id="precioProd">Precio :</strong> $ ${prod.precio}
       </p>
       <button
       type="button"
@@ -40,7 +43,7 @@ let totalCompra = "";
 cantidadProdCarrito.innerText = carro.length;
 // renderizado total de compra , con carro en 0
 totalCompra = carro.reduce(
-  (acumulador, producto) => acumulador + producto.price,
+  (acumulador, producto) => acumulador + producto.precio,
   0
 );
 //mensaje de compra por prod
@@ -61,7 +64,7 @@ function agregarACarro(prod) {
   carro.push(prod);
   cantidadProdCarrito.innerText = carro.length;
   totalCompra = carro.reduce(
-    (acumulador, producto) => acumulador + producto.price,
+    (acumulador, producto) => acumulador + producto.precio,
     0
   );
   console.table(carro);
@@ -69,8 +72,8 @@ function agregarACarro(prod) {
   document.getElementById("tablabody").innerHTML += `
   <tr>
     <td>${prod.id}</td>
-    <td>${prod.model}</td>
-    <td>${prod.price}</td>
+    <td>${prod.modelo}</td>
+    <td>${prod.precio}</td>
   </tr>`;
   document.getElementById("total").innerText =
     "Total a pagar $: " + totalCompra;
@@ -140,7 +143,7 @@ botonSend.addEventListener("click", () => {
   min = inputMin.value;
   alert("monto Min : " + min + "monto Max : " + max);
   const filtrarXPrecio = productos.filter(
-    (filtro) => filtro.price > min && filtro.price < max
+    (filtro) => filtro.precio > min && filtro.precio < max
   );
   generarCajas(filtrarXPrecio);
   agregarIdComprar(filtrarXPrecio);
@@ -166,7 +169,7 @@ btnBuscar.addEventListener("click", () => {
   resultadoInput = inputBuscar.value;
   console.log(resultadoInput);
   const buscarProd = productos.filter((prod) =>
-    prod.model.toLowerCase().includes(resultadoInput)
+    prod.modelo.toLowerCase().includes(resultadoInput)
   );
   generarCajas(buscarProd);
   agregarIdComprar(buscarProd);
@@ -228,8 +231,8 @@ Finalizar Compra
       document.getElementById("tablabody").innerHTML += `
   <tr>
     <td>${prod.id}</td>
-    <td>${prod.model}</td>
-    <td>${prod.price}</td>
+    <td>${prod.modelo}</td>
+    <td>${prod.precio}</td>
   </tr>
   `;
 
