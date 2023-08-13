@@ -12,11 +12,8 @@ const generarCajas = (arr) => {
       class="card-img-top"
       alt="..."
     />
-    <div class="card-body" style="text-align:center">
+    <div class="card-body">
       <h5 class="card-title" id="nombreProd">${prod.modelo}A15</h5>
-      <p class="card-text" > 
-       ${prod.descripcion}
-      </p>
       <p class="card-text" > 
       <strong id="precioProd">Precio :</strong> $ ${prod.precio}
       </p>
@@ -43,7 +40,7 @@ let totalCompra = "";
 cantidadProdCarrito.innerText = carro.length;
 // renderizado total de compra , con carro en 0
 totalCompra = carro.reduce(
-  (acumulador, producto) => acumulador + producto.precio,
+  (acumulador, producto) => acumulador + producto.price,
   0
 );
 //mensaje de compra por prod
@@ -60,7 +57,7 @@ const toastCompra = (prodNombre) => {
 };
 // pushear al arr carro/innert html
 function agregarACarro(prod) {
-  toastCompra(prod.model);
+  toastCompra(prod.modelo);
   carro.push(prod);
   cantidadProdCarrito.innerText = carro.length;
   totalCompra = carro.reduce(
@@ -74,6 +71,7 @@ function agregarACarro(prod) {
     <td>${prod.id}</td>
     <td>${prod.modelo}</td>
     <td>${prod.precio}</td>
+    <td><button type="button" class="btn btn-danger" onClick="borrarProd(${prod.id})">x</button></td>
   </tr>`;
   document.getElementById("total").innerText =
     "Total a pagar $: " + totalCompra;
@@ -85,7 +83,12 @@ const agregarIdComprar = (arr) => {
   for (const btn of btnComprar) {
     btn.addEventListener("click", () => {
       const prodACarro = arr.find((prod) => prod.id == btn.id);
-      agregarACarro(prodACarro);
+      const prodyCantidad = {
+        ...prodACarro,
+        cantidad: 0,
+      };
+
+      agregarACarro(prodyCantidad);
     });
   }
 };
@@ -233,6 +236,7 @@ Finalizar Compra
     <td>${prod.id}</td>
     <td>${prod.modelo}</td>
     <td>${prod.precio}</td>
+    <td><button type="button" class="btn btn-danger" onClick="borrarProd(${prod.id})">x</button></td>
   </tr>
   `;
 
@@ -289,3 +293,5 @@ Finalizar Compra
     });
   });
 });
+
+function sumarCantidad(obj) {}
