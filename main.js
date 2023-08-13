@@ -16,6 +16,13 @@ const generarCajas = (arr) => {
       <h5 class="card-title" id="nombreProd">${prod.modelo}A15</h5>
       <p class="card-text" > 
       <strong id="precioProd">Precio :</strong> $ ${prod.precio}
+      <input
+      type="number"
+      class="form-control"
+      placeholder=""
+      style="width:70px"
+      id="cantidadProd"
+    />
       </p>
       <button
       type="button"
@@ -68,10 +75,14 @@ function agregarACarro(prod) {
   //renderizado de prod individuales , con carrito abierto
   document.getElementById("tablabody").innerHTML += `
   <tr>
-    <td>${prod.id}</td>
+    <td>${prod.cantidad}</td>
     <td>${prod.modelo}</td>
     <td>${prod.precio}</td>
+<<<<<<< HEAD
     <td><button type="button" class="btn btn-danger" onClick="borrarProd(${prod.id})">x</button></td>
+=======
+    <td><button type="button" onClick="deleteProd(${prod.id})"class="btn btn-outline-danger">Danger</button></td>
+>>>>>>> f11f3fe873d21a2d8cccba256b03c73a879c4e82
   </tr>`;
   document.getElementById("total").innerText =
     "Total a pagar $: " + totalCompra;
@@ -191,9 +202,9 @@ btnCarrito.addEventListener("click", () => {
   let columna3 = document.getElementById("columna-3");
   carritoEstado = "open";
   //modificar tamaño del main para abrir el carrito
-  columna2.classList.replace("col-10", "col-8");
+  columna2.classList.replace("col-10", "col-7");
   //abrir carrito
-  columna3.classList.add("col-2");
+  columna3.classList.add("col-3");
   console.log(carritoEstado);
   //renderizar el carrito siempre y cuando el estado del carro sea "open"
   if (carritoEstado == "open") {
@@ -203,9 +214,10 @@ btnCarrito.addEventListener("click", () => {
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>Cant</th>
             <th>Nombre</th>
             <th>Precio</th>
+            <th></th>
         </tr>
     </thead>
     <tbody id="tablabody">
@@ -233,10 +245,14 @@ Finalizar Compra
     for (const prod of carro) {
       document.getElementById("tablabody").innerHTML += `
   <tr>
-    <td>${prod.id}</td>
+    <td>${prod.cantidad}</td>
     <td>${prod.modelo}</td>
     <td>${prod.precio}</td>
+<<<<<<< HEAD
     <td><button type="button" class="btn btn-danger" onClick="borrarProd(${prod.id})">x</button></td>
+=======
+    <td><button type="button" onClick="deleteProd(${prod.id})"class="btn btn-outline-danger">Danger</button></td>
+>>>>>>> f11f3fe873d21a2d8cccba256b03c73a879c4e82
   </tr>
   `;
 
@@ -251,7 +267,7 @@ Finalizar Compra
   let btnSeguirCompra = document.getElementById("seguirComprando");
   btnSeguirCompra.addEventListener("click", () => {
     //cerrado de carrito , removiendo las clases de bootstrap y remplazando los tamaños del main
-    columna3.classList.remove("col-2");
+    columna3.classList.remove("col-3");
     columna2.classList.replace("col-8", "col-10");
     columna3.innerHTML = "";
     carritoEstado = "cerrado"; //cerrar carrito para que no se ejecute el renderizado del carro
@@ -266,8 +282,8 @@ Finalizar Compra
     document.getElementById("total").innerText = `Total a pagar $: `;
     localStorage.removeItem("carro");
     carritoEstado = "cerrado";
-    columna3.classList.remove("col-2");
-    columna2.classList.replace("col-8", "col-10");
+    columna3.classList.remove("col-3");
+    columna2.classList.replace("col-7", "col-10");
     columna3.innerHTML = "";
     //alert de sweet alert ( se que la profe dice que no incluyamos dos librerias que hacen lo mismo pero me servia en modo ilustrativo)
     console.log(carritoEstado);
@@ -293,5 +309,15 @@ Finalizar Compra
     });
   });
 });
+<<<<<<< HEAD
 
 function sumarCantidad(obj) {}
+=======
+function deleteProd() {
+  alert("hola puta");
+}
+function validarCarro(producto) {
+  const idRepetido = carro.filter((prod) => prod.id == producto.id);
+  idRepetido;
+}
+>>>>>>> f11f3fe873d21a2d8cccba256b03c73a879c4e82
