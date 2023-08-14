@@ -18,10 +18,10 @@ const generarCajas = (arr) => {
       <strong id="precioProd">Precio :</strong> $ ${prod.precio}
       <input
       type="number"
-      class="form-control"
+      class=" cantidadProd form-control"
       placeholder=""
       style="width:70px"
-      id="cantidadProd"
+      id="cantProd"
     />
       </p>
       <button
@@ -42,6 +42,7 @@ generarCajas(productos);
 let carro = JSON.parse(localStorage.getItem("carro")) || [];
 let btnComprar = document.getElementsByClassName("compra");
 let cantidadProdCarrito = document.getElementById("cantProdCarrito");
+let cantidadProd = document.getElementsByClassName("cantidadProd");
 let totalCompra = "";
 //renderizado de cant de productos (primer instancia)
 cantidadProdCarrito.innerText = carro.length;
@@ -67,7 +68,7 @@ const validarCarro = (producto) => {
 
   if (validarId == true) {
     alert("son iguales");
-    producto.cantidad + 1;
+    producto.cantidad = producto.cantidad + 1;
     toastCompra(producto.modelo);
     cantidadProdCarrito.innerText = carro.length;
     totalCompra = carro.reduce(
@@ -84,23 +85,36 @@ const validarCarro = (producto) => {
     localStorage.setItem("carro", JSON.stringify(carro));
   } else {
     alert("no son iguales");
+    toastCompra(producto.modelo);
     carro.push(producto);
-    producto.cantidad++;
+    producto.cantidad = producto.cantidad + 1;
     cantidadProdCarrito.innerText = carro.length;
     totalCompra = carro.reduce(
       (acumulador, producto) =>
         acumulador + producto.precio * producto.cantidad,
       0
     );
-    document.getElementById("tablabody").innerHTML += `
-    <tr>
-      <td>${producto.cantidad}</td>
-      <td>${producto.modelo}</td>
-      <td>${producto.precio}</td>
-      <td><button type="button" class="btn btn-danger" onClick="borrarProd(${producto.id})">x</button></td>
-    
-      <td><button type="button" onClick="deleteProd(${producto.id})"class="btn btn-outline-danger">Danger</button></td>
-    </tr>`;
+
+    document.getElementById("tablabody").innerHTML = "";
+    for (const prod of carro) {
+      document.getElementById("tablabody").innerHTML += `
+  <tr>
+    <td>${prod.cantidad}</td>
+    <td>${prod.modelo}</td>
+    <td>${prod.precio}</td>
+    <td><button type="button" class="btn btn-danger" onClick="borrarProd(${prod.id})">x</button></td>
+  </tr>
+  `;
+    }
+    // document.getElementById("tablabody").innerHTML += `
+    // <tr>
+    //   <td>${producto.cantidad}</td>
+    //   <td>${producto.modelo}</td>
+    //   <td>${producto.precio}</td>
+    //   <td><button type="button" class="btn btn-danger" onClick="borrarProd(${producto.id})">x</button></td>
+
+    //   <td><button type="button" onClick="deleteProd(${producto.id})"class="btn btn-outline-danger">Danger</button></td>
+    // </tr>`;
     document.getElementById("total").innerText =
       "Total a pagar $: " + totalCompra;
     console.table(carro);
@@ -273,8 +287,6 @@ Finalizar Compra
     <td>${prod.modelo}</td>
     <td>${prod.precio}</td>
     <td><button type="button" class="btn btn-danger" onClick="borrarProd(${prod.id})">x</button></td>
-
-    <td><button type="button" onClick="deleteProd(${prod.id})"class="btn btn-outline-danger">Danger</button></td>
   </tr>
   `;
 
@@ -327,6 +339,9 @@ Finalizar Compra
         );
         carro = [];
         cantidadProdCarrito.innerText = carro.length;
+        for (const producto of productos) {
+          producto.cantidad = 0;
+        }
       }
     });
   });
