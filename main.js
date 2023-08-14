@@ -62,50 +62,74 @@ const toastCompra = (prodNombre) => {
     duration: 3000,
   }).showToast();
 };
-// pushear al arr carro/innert html
-function agregarACarro(prod) {
-  toastCompra(prod.modelo);
-  carro.push(prod);
-  cantidadProdCarrito.innerText = carro.length;
-  totalCompra = carro.reduce(
-    (acumulador, producto) => acumulador + producto.precio,
-    0
-  );
-  console.table(carro);
-  //renderizado de prod individuales , con carrito abierto
-  document.getElementById("tablabody").innerHTML += `
-  <tr>
-    <td>${prod.cantidad}</td>
-    <td>${prod.modelo}</td>
-    <td>${prod.precio}</td>
-<<<<<<< HEAD
-    <td><button type="button" class="btn btn-danger" onClick="borrarProd(${prod.id})">x</button></td>
-=======
-    <td><button type="button" onClick="deleteProd(${prod.id})"class="btn btn-outline-danger">Danger</button></td>
->>>>>>> f11f3fe873d21a2d8cccba256b03c73a879c4e82
-  </tr>`;
-  document.getElementById("total").innerText =
-    "Total a pagar $: " + totalCompra;
-  localStorage.setItem("carro", JSON.stringify(carro));
-}
+const validarCarro = (producto) => {
+  const validarId = carro.some((prod) => prod.id == producto.id);
 
+  if (validarId == true) {
+    alert("son iguales");
+    producto.cantidad + 1;
+    toastCompra(producto.modelo);
+    cantidadProdCarrito.innerText = carro.length;
+    totalCompra = carro.reduce(
+      (acumulador, producto) =>
+        acumulador + producto.precio * producto.cantidad,
+      0
+    );
+
+    //boton eliminar
+    console.table(carro);
+    //renderizado de prod individuales , con carrito abierto
+    document.getElementById("total").innerText =
+      "Total a pagar $: " + totalCompra;
+    localStorage.setItem("carro", JSON.stringify(carro));
+  } else {
+    alert("no son iguales");
+    carro.push(producto);
+    producto.cantidad++;
+    cantidadProdCarrito.innerText = carro.length;
+    totalCompra = carro.reduce(
+      (acumulador, producto) =>
+        acumulador + producto.precio * producto.cantidad,
+      0
+    );
+    document.getElementById("tablabody").innerHTML += `
+    <tr>
+      <td>${producto.cantidad}</td>
+      <td>${producto.modelo}</td>
+      <td>${producto.precio}</td>
+      <td><button type="button" class="btn btn-danger" onClick="borrarProd(${producto.id})">x</button></td>
+    
+      <td><button type="button" onClick="deleteProd(${producto.id})"class="btn btn-outline-danger">Danger</button></td>
+    </tr>`;
+    document.getElementById("total").innerText =
+      "Total a pagar $: " + totalCompra;
+    console.table(carro);
+    //renderizado de prod individuales , con carrito abierto
+    localStorage.setItem("carro", JSON.stringify(carro));
+  }
+};
+// document.getElementById("tablabody").innerHTML += `
+// <tr>
+//   <td>${producto.cantidad}</td>
+//   <td>${producto.modelo}</td>
+//   <td>${producto.precio}</td>
+//   <td><button type="button" class="btn btn-danger" onClick="borrarProd(${producto.id})">x</button></td>
+// </tr>`;
+
+const renderizarProductos = () => {};
 //agregar id a los botnes y enviar al carrito
 const agregarIdComprar = (arr) => {
   for (const btn of btnComprar) {
     btn.addEventListener("click", () => {
       const prodACarro = arr.find((prod) => prod.id == btn.id);
-      const prodyCantidad = {
-        ...prodACarro,
-        cantidad: 0,
-      };
-
-      agregarACarro(prodyCantidad);
+      validarCarro(prodACarro);
     });
   }
+
+  //filtrar por marca
 };
 agregarIdComprar(productos);
 
-//filtrar por marca
 let formulario = document.getElementById("formulario");
 let botonesMarca = document.getElementsByClassName("btnMarca");
 console.table(botonesMarca);
@@ -248,11 +272,9 @@ Finalizar Compra
     <td>${prod.cantidad}</td>
     <td>${prod.modelo}</td>
     <td>${prod.precio}</td>
-<<<<<<< HEAD
     <td><button type="button" class="btn btn-danger" onClick="borrarProd(${prod.id})">x</button></td>
-=======
+
     <td><button type="button" onClick="deleteProd(${prod.id})"class="btn btn-outline-danger">Danger</button></td>
->>>>>>> f11f3fe873d21a2d8cccba256b03c73a879c4e82
   </tr>
   `;
 
@@ -268,7 +290,7 @@ Finalizar Compra
   btnSeguirCompra.addEventListener("click", () => {
     //cerrado de carrito , removiendo las clases de bootstrap y remplazando los tamaños del main
     columna3.classList.remove("col-3");
-    columna2.classList.replace("col-8", "col-10");
+    columna2.classList.replace("col-7", "col-10");
     columna3.innerHTML = "";
     carritoEstado = "cerrado"; //cerrar carrito para que no se ejecute el renderizado del carro
     console.log(carritoEstado);
@@ -309,15 +331,3 @@ Finalizar Compra
     });
   });
 });
-<<<<<<< HEAD
-
-function sumarCantidad(obj) {}
-=======
-function deleteProd() {
-  alert("hola puta");
-}
-function validarCarro(producto) {
-  const idRepetido = carro.filter((prod) => prod.id == producto.id);
-  idRepetido;
-}
->>>>>>> f11f3fe873d21a2d8cccba256b03c73a879c4e82
