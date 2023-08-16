@@ -42,7 +42,6 @@ generarCajas(productos);
 let carro = JSON.parse(localStorage.getItem("carro")) || [];
 let btnComprar = document.getElementsByClassName("compra");
 let cantidadProdCarrito = document.getElementById("cantProdCarrito");
-let cantidadProd = document.getElementsByClassName("cantidadProd");
 let totalCompra = "";
 //renderizado de cant de productos (primer instancia)
 cantidadProdCarrito.innerText = carro.length;
@@ -64,6 +63,7 @@ const toastCompra = (prodNombre) => {
   }).showToast();
 };
 const validarCarro = (producto) => {
+  //validando producto con el mismo id de un producto en carro
   const validarId = carro.some((prod) => prod.id == producto.id);
 
   if (validarId == true) {
@@ -106,15 +106,6 @@ const validarCarro = (producto) => {
   </tr>
   `;
     }
-    // document.getElementById("tablabody").innerHTML += `
-    // <tr>
-    //   <td>${producto.cantidad}</td>
-    //   <td>${producto.modelo}</td>
-    //   <td>${producto.precio}</td>
-    //   <td><button type="button" class="btn btn-danger" onClick="borrarProd(${producto.id})">x</button></td>
-
-    //   <td><button type="button" onClick="deleteProd(${producto.id})"class="btn btn-outline-danger">Danger</button></td>
-    // </tr>`;
     document.getElementById("total").innerText =
       "Total a pagar $: " + totalCompra;
     console.table(carro);
@@ -122,13 +113,17 @@ const validarCarro = (producto) => {
     localStorage.setItem("carro", JSON.stringify(carro));
   }
 };
-// document.getElementById("tablabody").innerHTML += `
-// <tr>
-//   <td>${producto.cantidad}</td>
-//   <td>${producto.modelo}</td>
-//   <td>${producto.precio}</td>
-//   <td><button type="button" class="btn btn-danger" onClick="borrarProd(${producto.id})">x</button></td>
-// </tr>`;
+const inputCantidad = () => {
+  let cantidadProd = document.getElementsByClassName("cantidadProd");
+  console.table("hola" + cantidadProd);
+  for (const cant of cantidadProd) {
+    if (cant != 0) {
+      alert("hola");
+    } else {
+      alert("no esta trola");
+    }
+  }
+};
 
 const renderizarProductos = () => {};
 //agregar id a los botnes y enviar al carrito
@@ -307,6 +302,7 @@ Finalizar Compra
     carritoEstado = "cerrado"; //cerrar carrito para que no se ejecute el renderizado del carro
     console.log(carritoEstado);
   });
+
   //btn finalizar compra ,cerrar y vaciar carrrito
   let btnFinalizarCompra = document.getElementById("btnFinalizarCompra");
   btnFinalizarCompra.addEventListener("click", () => {
