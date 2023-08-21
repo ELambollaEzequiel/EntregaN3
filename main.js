@@ -226,57 +226,15 @@ btnBuscar.addEventListener("click", () => {
 // carrito compra
 
 let carritoCompra = document.getElementById("carrito-compra");
-let columna2 = document.getElementById("columna-2");
-//abbrir y cerrar carito
-let carritoEstado = "cerrado"; //estado actual del carrito
-//abrir carrito y renderizar productos
+
 let btnCarrito = document.getElementById("btnProdCarrito");
+
+console.log(btnCarrito);
 btnCarrito.addEventListener("click", () => {
-  let columna3 = document.getElementById("columna-3");
-  carritoEstado = "open";
-  //modificar tamaño del main para abrir el carrito
-  columna2.classList.replace("col-10", "col-7");
-  //abrir carrito
-  columna3.classList.add("col-3");
-  console.log(carritoEstado);
-  //renderizar el carrito siempre y cuando el estado del carro sea "open"
-  if (carritoEstado == "open") {
-    columna3.innerHTML = `           <div class="container-fluid">
-<div class="row">
-<h4>Tu carrito:</h4>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Cant</th>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody id="tablabody">
-        <!-- aqui tabla carrito -->
-    </tbody>
-</table>
-<h4 id="total">Total a pagar $:</h4>
-</div>
-<button
-class="btn btn-outline-secondary btnMaxMin"
-type="button"
-id="seguirComprando"
->
-Seguir Comprando
-</button>
-<button
-class="btn btn-outline-secondary btnMaxMin"
-type="button"
-id="btnFinalizarCompra"
->
-Finalizar Compra
-</button>
-</div>`;
-    //renderizado de los prod de carro y del total en el caso de que haya productos guardados
-    for (const prod of carro) {
-      document.getElementById("tablabody").innerHTML += `
+  console.log("click");
+  //renderizado de los prod de carro y del total en el caso de que haya productos guardados
+  for (const prod of carro) {
+    document.getElementById("tablabody").innerHTML += `
   <tr>
     <td>${prod.cantidad}</td>
     <td>${prod.modelo}</td>
@@ -285,60 +243,39 @@ Finalizar Compra
   </tr>
   `;
 
-      document.getElementById("total").innerText =
-        "Total a pagar $: " + totalCompra;
-      //boton eliminar
-    }
-  } else {
-    carritoEstado = "cerrado";
+    document.getElementById("total").innerText =
+      "Total a pagar $: " + totalCompra;
+    //boton eliminar
   }
-  //cerrar carrito de compra y seguir comprando
-  let btnSeguirCompra = document.getElementById("seguirComprando");
-  btnSeguirCompra.addEventListener("click", () => {
-    //cerrado de carrito , removiendo las clases de bootstrap y remplazando los tamaños del main
-    columna3.classList.remove("col-3");
-    columna2.classList.replace("col-7", "col-10");
-    columna3.innerHTML = "";
-    carritoEstado = "cerrado"; //cerrar carrito para que no se ejecute el renderizado del carro
-    console.log(carritoEstado);
-  });
+});
+//cerrar carrito de compra y seguir comprando
 
-  //btn finalizar compra ,cerrar y vaciar carrrito
-  let btnFinalizarCompra = document.getElementById("btnFinalizarCompra");
-  btnFinalizarCompra.addEventListener("click", () => {
-    //vaciar array carro y el renderizado
-
-    document.getElementById("tablabody").innerHTML = ``;
-    document.getElementById("total").innerText = `Total a pagar $: `;
-    localStorage.removeItem("carro");
-    carritoEstado = "cerrado";
-    columna3.classList.remove("col-3");
-    columna2.classList.replace("col-7", "col-10");
-    columna3.innerHTML = "";
-    //alert de sweet alert ( se que la profe dice que no incluyamos dos librerias que hacen lo mismo pero me servia en modo ilustrativo)
-    console.log(carritoEstado);
-    Swal.fire({
-      title: "VERIFIQUE ESTOS DATOS?",
-      text: `Usted posee : ${carro.length} de prod en carro , por un total de : ${totalCompra}?`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "confirmar!",
-    }).then((result) => {
-      //da un mensaje de succes y en caso de que este bien sigue con el vaciado del carrito y del contador de prod
-      if (result.isConfirmed) {
-        Swal.fire(
-          "Tu carrito a sido validado con exito",
-          "En unos momentos te enviaremos el link de pago",
-          "success"
-        );
-        carro = [];
-        cantidadProdCarrito.innerText = carro.length;
-        for (const producto of productos) {
-          producto.cantidad = 0;
-        }
+//btn finalizar compra ,cerrar y vaciar carrrito
+let btnFinalizarCompra = document.getElementById("btnFinalizarCompra");
+btnFinalizarCompra.addEventListener("click", () => {
+  //vaciar array carro y el renderizado
+  //alert de sweet alert ( se que la profe dice que no incluyamos dos librerias que hacen lo mismo pero me servia en modo ilustrativo)
+  Swal.fire({
+    title: "VERIFIQUE ESTOS DATOS?",
+    text: `Usted posee : ${carro.length} de prod en carro , por un total de : ${totalCompra}?`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "confirmar!",
+  }).then((result) => {
+    //da un mensaje de succes y en caso de que este bien sigue con el vaciado del carrito y del contador de prod
+    if (result.isConfirmed) {
+      Swal.fire(
+        "Tu carrito a sido validado con exito",
+        "En unos momentos te enviaremos el link de pago",
+        "success"
+      );
+      carro = [];
+      cantidadProdCarrito.innerText = carro.length;
+      for (const producto of productos) {
+        producto.cantidad = 0;
       }
-    });
+    }
   });
 });
